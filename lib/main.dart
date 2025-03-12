@@ -21,58 +21,93 @@ class SorteioPage extends StatefulWidget {
 }
 
 class _SorteioPageState extends State<SorteioPage> {
-  final TextEditingController _minController = TextEditingController();
-  final TextEditingController _maxController = TextEditingController();
-  int? _numeroSorteado;
+  String? nome_sorteado;
 
-  void _sortearNumero() {
-    final int min = int.tryParse(_minController.text) ?? 0;
-    final int max = int.tryParse(_maxController.text) ?? 100;
+  List<String> nomes = [
+    "Ana",
+    "Bruno",
+    "Carlos",
+    "Daniela",
+    "Eduardo",
+    "Fernanda",
+    "Gabriel",
+    "Helena",
+    "Igor",
+    "Juliana",
+    "Kleber",
+    "Larissa",
+    "Marcos",
+    "Natália",
+    "Otávio",
+    "Patrícia",
+    "Quintino",
+    "Rafaela",
+    "Samuel",
+    "Tatiane",
+    "Ubirajara",
+    "Vanessa",
+    "Wagner",
+    "Xavier",
+    "Yasmin",
+    "Zuleica",
+    "Anderson",
+    "Beatriz",
+    "Caio",
+    "Denise",
+    "Enzo",
+    "Flávia",
+    "Giovanni",
+    "Heloísa",
+    "Isabela",
+    "Jorge",
+    "Karen",
+    "Leonardo",
+    "Melissa",
+    "Nelson",
+    "Orlando",
+    "Priscila",
+    "Raul",
+    "Sabrina",
+    "Tadeu",
+    "Ursula",
+    "Valter",
+    "Washington",
+    "Ximena",
+    "Yago"
+  ];
 
-    if (min >= max) {
-      setState(() {
-        _numeroSorteado = null;
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('O valor mínimo deve ser menor que o máximo!')),
-      );
-      return;
-    }
-
+  void _sortearNome() {
     setState(() {
-      _numeroSorteado = Random().nextInt(max - min + 1) + min;
+      nome_sorteado = nomes[Random().nextInt(nomes.length - 1)];
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Sorteador de Números')),
+      appBar: AppBar(title: const Text('Sorteador de Nomes')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextField(
-              controller: _minController,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: 'Valor Mínimo'),
+            GridView.extent(
+              maxCrossAxisExtent: 5,
+              children: <Widget>[
+                for (int i = 0; i < nomes.length; i++) ...[Text(nomes[i])]
+              ],
             ),
-            TextField(
-              controller: _maxController,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: 'Valor Máximo'),
-            ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: _sortearNumero,
-              child: Text('Sortear Número'),
+              onPressed: _sortearNome,
+              child: const Text('Nome Sorteado'),
             ),
-            SizedBox(height: 20),
-            if (_numeroSorteado != null)
+            const SizedBox(height: 20),
+            if (nome_sorteado != null)
               Text(
-                'Número sorteado: $_numeroSorteado',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                'Nome sorteado: $nome_sorteado',
+                style:
+                    const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
           ],
         ),
